@@ -6,6 +6,14 @@ from django.contrib.auth.hashers import make_password
 from .serializers import UserSerializer
 from django.contrib.auth.hashers import check_password
 
+
+def function(input_list):
+    my_dict = dict()
+    for item in input_list:
+        my_dict[item[0]] = item[1]
+
+    return my_dict
+
 @api_view(["POST"])
 def Signup(request):
     try:
@@ -37,10 +45,13 @@ def Login(request):
             user=list(serializer.data[0].items())
             password = check_password(
                 data["password"], user[1][1])
+            data=function(user)
+            data['password']=""
             if password:
                 return Response({
                     'status': True,
-                    'message': 'Valid Credentials'
+                    'message': 'Valid Credentials',
+                    'data':data,
                 })
             else:
                 return Response({

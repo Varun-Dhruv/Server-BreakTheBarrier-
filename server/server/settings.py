@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'knox',
     'SignLanguageDetection',
     'Auth',
+    'channels',
+    'corsheaders',
 
 ]
 REST_FRAMEWORK = {
@@ -65,8 +67,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'server.urls'
 
 TEMPLATES = [
@@ -86,6 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
+ASGI_APPLICATION = 'server.asgi.application'
 
 
 # Database
