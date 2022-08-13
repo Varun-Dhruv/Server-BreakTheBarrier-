@@ -14,6 +14,7 @@ def function(input_list):
 
     return my_dict
 
+
 @api_view(["POST"])
 def Signup(request):
     try:
@@ -24,14 +25,15 @@ def Signup(request):
 
         if serializer.is_valid():
             serializer.save()
+            data['password'] = ""
             return Response({
-                'status': True, 'message': "Done Fetched"
+                'status': True, 'message': "Done Fetched", 'data': data
             })
     except Exception as e:
-        print(e)
         return Response({
             'status': False,
-            'message': 'Something went wrong'
+            'message': e
+            
         })
 
 
@@ -41,24 +43,24 @@ def Login(request):
         data = request.data
         obj = CustomUser.objects.filter(username=data['username']).values()
         if obj:
-            serializer = UserSerializer(obj,many=True)
-            user=list(serializer.data[0].items())
+            serializer = UserSerializer(obj, many=True)
+            user = list(serializer.data[0].items())
             password = check_password(
                 data["password"], user[1][1])
-            data=function(user)
-            data['password']=""
+            data = function(user)
+            data['password'] = ""
             if password:
                 return Response({
                     'status': True,
                     'message': 'Valid Credentials',
-                    'data':data,
+                    'data': data,
                 })
             else:
                 return Response({
                     'status': False,
                     'message': 'InValid Credentials'
                 })
-                
+
         else:
             return Response({
                 'status': False,
